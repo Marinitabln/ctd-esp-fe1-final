@@ -9,13 +9,22 @@ import './tarjeta-personaje.css';
  * 
  * @returns un JSX element 
  */
-const TarjetaPersonaje = () => {
 
+interface IProps{
+    key: number,
+    name: string,
+    image: string,
+    isFavourite: boolean,
+    onClick: ()=>void
+}
+
+
+const TarjetaPersonaje = ({key, name, image, isFavourite, onClick}: IProps) => {
     return <div className="tarjeta-personaje">
-        <img src="https://rickandmortyapi.com/api/character/avatar/1.jpeg" alt="Rick Sanchez"/>
+        <img src={image} alt={name}/>
         <div className="tarjeta-personaje-body">
-            <span>Rick Sanchez</span>
-            <BotonFavorito esFavorito={false} />
+            <span>{name}</span>
+            <BotonFavorito esFavorito={isFavourite} />
         </div>
     </div>
 }
