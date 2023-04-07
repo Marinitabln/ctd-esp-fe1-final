@@ -26,7 +26,8 @@ button.primary {
 
 button.primary[disabled] {
     background-color: rgb(128, 134, 140);
-}
+   /*  cursor: none; */
+} 
 
 button.danger {
     cursor: pointer;

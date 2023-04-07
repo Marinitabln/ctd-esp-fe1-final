@@ -10,14 +10,14 @@ import { useAppSelector } from "../redux/hook";
  * @returns la pagina de favoritos
  */
 const PaginaFavoritos = () => {
-    const characters = useAppSelector(state => state.characters.characters)
+    const favourites = useAppSelector(state => state.characters.characters)//cambiar por array favoritos
 
     return <div className="container">
         <div className="actions">
             <h3>Personajes Favoritos</h3>
-            <button className="danger">Test Button</button>
+            <button className="danger">Eliminar todos</button>
         </div>
-        <GrillaPersonajes characters={characters} />
+        <GrillaPersonajes characters={favourites} />
     </div>
 }
 

@@ -21,6 +21,7 @@ export interface Character {
 
 export interface IInitialType{
     characters: Character[],
+    searchValue: string,
     loading: boolean,
     error: boolean
 }

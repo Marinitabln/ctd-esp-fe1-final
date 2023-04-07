@@ -11,7 +11,6 @@ import './tarjeta-personaje.css';
  */
 
 interface IProps{
-    key: number,
     name: string,
     image: string,
     isFavourite: boolean,
@@ -19,7 +18,7 @@ interface IProps{
 }
 
 
-const TarjetaPersonaje = ({key, name, image, isFavourite, onClick}: IProps) => {
+const TarjetaPersonaje = ({name, image, isFavourite, onClick}: IProps) => {
     return <div className="tarjeta-personaje">
         <img src={image} alt={name}/>
         <div className="tarjeta-personaje-body">
