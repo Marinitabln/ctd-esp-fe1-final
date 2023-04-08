@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { IInitialType } from "./type";
+import { IInitialType, Character } from "./type";
 
 const initialState: IInitialType = {
   characters: [],
@@ -14,7 +14,7 @@ export const getCharacters = createAsyncThunk(
     const response = await fetch(
       `https://rickandmortyapi.com/api/character/?page=${page}&limit=6`
     );
-    const parseRes = await response.json();
+    const parseRes = await response.json();   
     return parseRes;
   }
 );
@@ -38,6 +38,9 @@ const personajesSlice = createSlice({
       console.log({action});      
       state.searchValue = action.payload;
     },
+    actionClearSearch: (state) => {
+      state.searchValue= ""
+  },
   },
   extraReducers: (builder) => {
     builder
@@ -64,5 +67,5 @@ const personajesSlice = createSlice({
   },
 });
 
-export const { actionSearch } = personajesSlice.actions;
+export const { actionSearch, actionClearSearch } = personajesSlice.actions;
 export default personajesSlice.reducer;

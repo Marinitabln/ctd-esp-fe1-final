@@ -3,7 +3,7 @@ import Filtros from "../componentes/personajes/filtros.componente"
 import GrillaPersonajes from "../componentes/personajes/grilla-personajes.componente"
 import Paginacion from "../componentes/paginacion/paginacion.componente";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
-import { getCharacters, filterCharacters, actionSearch } from '../redux/charactersSlice'
+import { getCharacters, filterCharacters, actionSearch, actionClearSearch } from '../redux/charactersSlice'
 
 
 /**
@@ -19,7 +19,7 @@ const PaginaInicio = () => {
     const dispatch = useAppDispatch();
 
     const characters = useAppSelector(state => state.characters.characters);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState<number>(1);
     const previousPage = () => {
         setPage((page) => page - 1);
     };
@@ -32,14 +32,21 @@ const PaginaInicio = () => {
     }, [page, dispatch]);
 
     let search:string = useAppSelector((state)=>state.characters.searchValue);
-    const inputRef = useRef(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         search = e.target.value;
         dispatch(actionSearch(search));
         dispatch(filterCharacters(search));
-       // inputRef.current.focus();
+        inputRef?.current?.focus();
     };
+
+    const clearSearch = ()=>{
+        search = "";
+        dispatch(actionClearSearch());
+        inputRef?.current?.focus();
+        dispatch(getCharacters(1));
+    }
 
     console.log({search})
 
@@ -49,9 +56,13 @@ const PaginaInicio = () => {
     return <div className="container">
         <div className="actions">
             <h3>Catálogo de Personajes</h3>
-            <button className="danger">Limpiar filtros</button>
+            <button className="danger" onClick={clearSearch}>Limpiar filtros</button>
         </div>
-        <Filtros inputRef={inputRef} onSearch={onSearch}/>
+        <Filtros
+            inputRef={inputRef}
+            onSearch={onSearch}
+            searchValue={search}
+        />
         <Paginacion
             isFirstPage={page === 1}
             onPrevious={previousPage}
