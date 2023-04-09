@@ -21,8 +21,13 @@ export interface Character {
 
 export interface IInitialType{
     characters: Character[],
+    favourites: Character[],
+    selectedCharacter: Character,
+    pagination:{
+        next:string,
+        prev:string
+    },
     searchValue: string,
     loading: boolean,
     error: boolean
 }
-

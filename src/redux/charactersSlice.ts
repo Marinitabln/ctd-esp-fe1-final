@@ -1,32 +1,61 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { IInitialType, Character } from "./type";
+import { IInitialType} from "./type";
+import { apiGetCaracters, apiGetCharacterById } from "./apiCalls";
 
 const initialState: IInitialType = {
   characters: [],
+  favourites: [],
+  selectedCharacter: {
+    id: 0,
+    name: "",
+    status: "",
+    species: "",
+    type: "",
+    gender: "",
+    origin: {
+        name: "",
+        url: "",
+    },
+    location: {
+        name: "",
+        url: "",
+    },
+    image: "",
+    episode: [],
+    url: "",
+    created: "",
+},
+  pagination: {
+    next: "",
+    prev: "",
+  },
   searchValue: "",
   loading: false,
   error: false,
 };
 
 export const getCharacters = createAsyncThunk(
-  "characters",
-  async (page: number) => {
-    const response = await fetch(
-      `https://rickandmortyapi.com/api/character/?page=${page}&limit=6`
-    );
-    const parseRes = await response.json();   
+  "/characters",
+  async (name: string) => {
+    const response = await apiGetCaracters(name)
+    return response;
+  }
+);
+
+export const getPagination = createAsyncThunk(
+  "/pagination",
+  async (url: string) => {
+    const response = await fetch(url);
+    const parseRes = await response.json();
     return parseRes;
   }
 );
 
-export const filterCharacters = createAsyncThunk(
-  "character",
-  async (name: string) => {
-    const response = await fetch(
-      `https://rickandmortyapi.com/api/character/?name=${name}`
-    );
-    const parseRes = await response.json();
-    return parseRes;
+export const getCharacterById = createAsyncThunk(
+  "/character",
+  async (id: number) => {
+    const response = await apiGetCharacterById(id);
+    return response;
   }
 );
 
@@ -35,11 +64,18 @@ const personajesSlice = createSlice({
   initialState,
   reducers: {
     actionSearch: (state, action) => {
-      console.log({action});      
+      console.log({ action });
       state.searchValue = action.payload;
     },
     actionClearSearch: (state) => {
-      state.searchValue= ""
+      state.searchValue = "";
+    },
+    actionFavourites: (state, action) => {
+      if(state.favourites.find(item => item.id === action.payload.id)){
+        state.favourites = state.favourites.filter(fav => fav.id !== action.payload.id)
+      }else{
+        state.favourites.push(action.payload)
+      }
   },
   },
   extraReducers: (builder) => {
@@ -47,23 +83,42 @@ const personajesSlice = createSlice({
       .addCase(getCharacters.fulfilled, (state, action) => {
         state.loading = false;
         state.characters = action.payload.results;
+        state.pagination.prev = action.payload.info.prev;
+        state.pagination.next = action.payload.info.next;
       })
       .addCase(getCharacters.pending, (state) => {
         state.loading = true;
       })
       .addCase(getCharacters.rejected, (state) => {
         state.error = true;
+        state.loading = false;
       })
-      .addCase(filterCharacters.fulfilled, (state, action) => {
+      .addCase(getPagination.fulfilled, (state, action) => {
         state.loading = false;
         state.characters = action.payload.results;
+        state.pagination.prev = action.payload.info.prev;
+        state.pagination.next = action.payload.info.next;
+        
       })
-      .addCase(filterCharacters.pending, (state) => {
+      .addCase(getPagination.pending, (state) => {
         state.loading = true;
       })
-      .addCase(filterCharacters.rejected, (state) => {
+      .addCase(getPagination.rejected, (state) => {
         state.error = true;
+        state.loading = false;
       })
+      .addCase(getCharacterById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedCharacter = action.payload        
+      })
+      .addCase(getCharacterById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getCharacterById.rejected, (state) => {
+        state.error = true;
+        state.loading = false;
+      })
+    ;
   },
 });
 

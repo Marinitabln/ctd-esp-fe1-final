@@ -1,3 +1,6 @@
+import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../redux/hook';
+import { Character } from '../../redux/type';
 import BotonFavorito from '../botones/boton-favorito.componente';
 import './tarjeta-personaje.css';
 
@@ -11,19 +14,24 @@ import './tarjeta-personaje.css';
  */
 
 interface IProps{
-    name: string,
-    image: string,
-    isFavourite: boolean,
-    onClick: ()=>void
+    character: Character
 }
 
+const TarjetaPersonaje = ({character}:IProps) => {
+    const navigate = useNavigate();
 
-const TarjetaPersonaje = ({name, image, isFavourite, onClick}: IProps) => {
+    const favourites = useAppSelector(state => state.characters.favourites)
+    const isFavourite = !!favourites.find(favourite =>favourite.id === character.id)
+
+    const handlerOnClick = (character:Character)=>{
+        navigate(`/detalle/${character.id}`)
+    }
+
     return <div className="tarjeta-personaje">
-        <img src={image} alt={name}/>
+        <img src={character.image} alt={character.name} onClick={()=>handlerOnClick(character)}/>
         <div className="tarjeta-personaje-body">
-            <span>{name}</span>
-            <BotonFavorito esFavorito={isFavourite} />
+            <span>{character.name}</span>
+            <BotonFavorito esFavorito={isFavourite} character={character}/>
         </div>
     </div>
 }

@@ -1,3 +1,5 @@
+import { getPagination } from "../../redux/charactersSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import "./paginacion.css";
 
 /**
@@ -9,19 +11,19 @@ import "./paginacion.css";
  * @returns un JSX element
  */
 
-interface IProps {
-  onPrevious: () => void;
-  onNext: () => void;
-  isFirstPage: boolean
-}
 
-const Paginacion = ({ isFirstPage, onPrevious, onNext }: IProps) => {
+const Paginacion = () => {
+
+  const dispatch = useAppDispatch();
+
+  const pagination = useAppSelector(state => state.characters.pagination)
+
   return (
     <div className="paginacion">
-      <button disabled={isFirstPage} className={"primary"} onClick={onPrevious}>
+      <button disabled={!pagination.prev} className={"primary"} onClick={()=>dispatch(getPagination(pagination.prev))}>
         Anterior
       </button>
-      <button disabled={false} className={"primary"} onClick={onNext}>
+      <button disabled={!pagination.next} className={"primary"} onClick={()=>dispatch(getPagination(pagination.next))}>
         Siguiente
       </button>
     </div>

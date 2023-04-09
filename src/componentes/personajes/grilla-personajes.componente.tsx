@@ -16,19 +16,13 @@ interface IProps{
 
 const GrillaPersonajes = ({ characters }:IProps) => {
 
-    const handlerOnClick = ()=>{
-
-    }
-
+   
     return <div className="grilla-personajes">
         {
             characters?.map((character)=>(
                 <TarjetaPersonaje 
                 key={character.id}
-                name={character.name}
-                image={character.image}
-                isFavourite={false}
-                onClick={handlerOnClick}
+                character={character}
             />
             ))
         }

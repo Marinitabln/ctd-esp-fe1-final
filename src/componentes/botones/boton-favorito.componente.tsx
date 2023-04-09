@@ -1,3 +1,4 @@
+import { Character } from '../../redux/type';
 import './boton-favorito.css';
 /**
  * Boton que indica si un elemento es favorito o no, y da la posibilidad de marcarlo/desmarcarlo
@@ -10,10 +11,10 @@ import './boton-favorito.css';
 
 interface Props{
     esFavorito: boolean,
-    onClick?:()=> void
+    character?: Character
 }
 
-const BotonFavorito = ({esFavorito, onClick}: Props) => {
+const BotonFavorito = ({esFavorito, character}: Props) => {
     const src = esFavorito ? "/imagenes/star-filled.png" : "/imagenes/star.png"
 
     return <div className="boton-favorito">

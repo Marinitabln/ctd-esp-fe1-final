@@ -1,9 +1,10 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import Filtros from "../componentes/personajes/filtros.componente"
 import GrillaPersonajes from "../componentes/personajes/grilla-personajes.componente"
 import Paginacion from "../componentes/paginacion/paginacion.componente";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
-import { getCharacters, filterCharacters, actionSearch, actionClearSearch } from '../redux/charactersSlice'
+import { getCharacters, actionSearch, actionClearSearch, } from '../redux/charactersSlice'
+
 
 
 /**
@@ -18,41 +19,33 @@ const PaginaInicio = () => {
 
     const dispatch = useAppDispatch();
 
-    const characters = useAppSelector(state => state.characters.characters);
-    const [page, setPage] = useState<number>(1);
-    const previousPage = () => {
-        setPage((page) => page - 1);
-    };
-    const nextPage = () => {
-        setPage((page) => page + 1);
-    };
+    const { characters, loading, error} = useAppSelector(state => state.characters);
+  
 
     useEffect(() => {
-        dispatch(getCharacters(page));
-    }, [page, dispatch]);
+        dispatch(getCharacters(""));
+        inputRef?.current?.focus();
+    }, [dispatch]);
 
-    let search:string = useAppSelector((state)=>state.characters.searchValue);
+
+    let search: string = useAppSelector((state) => state.characters.searchValue);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         search = e.target.value;
         dispatch(actionSearch(search));
-        dispatch(filterCharacters(search));
+        dispatch(getCharacters(search));
         inputRef?.current?.focus();
     };
-
-    const clearSearch = ()=>{
+  
+    const clearSearch = () => {
         search = "";
-        dispatch(actionClearSearch());
+        dispatch(actionClearSearch());       
+        dispatch(getCharacters(""));
         inputRef?.current?.focus();
-        dispatch(getCharacters(1));
     }
 
-    console.log({search})
 
-    //si hay filtro, que renderice solo los filtrados
-    //sino que renderice todo
-    
     return <div className="container">
         <div className="actions">
             <h3>Catálogo de Personajes</h3>
@@ -63,17 +56,24 @@ const PaginaInicio = () => {
             onSearch={onSearch}
             searchValue={search}
         />
-        <Paginacion
-            isFirstPage={page === 1}
-            onPrevious={previousPage}
-            onNext={nextPage}
-        />
-        <GrillaPersonajes characters={characters} />  
-        <Paginacion
-            isFirstPage={page === 1}
-            onPrevious={previousPage}
-            onNext={nextPage}
-        />
+        {error && (
+            <>
+                <h2>No se encontraron resultados para tu búsqueda</h2>
+                <h3>Intentalo nuevamente</h3>
+            </>
+        )}
+        {loading && (
+            <>
+                <h2>Cargando...</h2>
+            </>
+        )}
+        {!loading && !error && (
+            <>
+                <Paginacion />
+                <GrillaPersonajes characters={characters} /> 
+                <Paginacion />
+            </>
+        )}
     </div>
 }
 
