@@ -16,7 +16,6 @@ interface IProps{
 
 const GrillaPersonajes = ({ characters }:IProps) => {
 
-   
     return <div className="grilla-personajes">
         {
             characters?.map((character)=>(

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { IInitialType} from "./type";
+import { IInitialType } from "./type";
 import { apiGetCaracters, apiGetCharacterById } from "./apiCalls";
 
 const initialState: IInitialType = {
@@ -13,18 +13,18 @@ const initialState: IInitialType = {
     type: "",
     gender: "",
     origin: {
-        name: "",
-        url: "",
+      name: "",
+      url: "",
     },
     location: {
-        name: "",
-        url: "",
+      name: "",
+      url: "",
     },
     image: "",
     episode: [],
     url: "",
     created: "",
-},
+  },
   pagination: {
     next: "",
     prev: "",
@@ -37,7 +37,7 @@ const initialState: IInitialType = {
 export const getCharacters = createAsyncThunk(
   "/characters",
   async (name: string) => {
-    const response = await apiGetCaracters(name)
+    const response = await apiGetCaracters(name);
     return response;
   }
 );
@@ -71,12 +71,17 @@ const personajesSlice = createSlice({
       state.searchValue = "";
     },
     actionFavourites: (state, action) => {
-      if(state.favourites.find(item => item.id === action.payload.id)){
-        state.favourites = state.favourites.filter(fav => fav.id !== action.payload.id)
-      }else{
-        state.favourites.push(action.payload)
+      if (state.favourites.find((item) => item.id === action.payload.id)) {
+        state.favourites = state.favourites.filter(
+          (fav) => fav.id !== action.payload.id
+        );
+      } else {
+        state.favourites.push(action.payload);
       }
-  },
+    },
+    actionDeleteFavourites: (state) => {
+      state.favourites = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -98,7 +103,6 @@ const personajesSlice = createSlice({
         state.characters = action.payload.results;
         state.pagination.prev = action.payload.info.prev;
         state.pagination.next = action.payload.info.next;
-        
       })
       .addCase(getPagination.pending, (state) => {
         state.loading = true;
@@ -109,7 +113,7 @@ const personajesSlice = createSlice({
       })
       .addCase(getCharacterById.fulfilled, (state, action) => {
         state.loading = false;
-        state.selectedCharacter = action.payload        
+        state.selectedCharacter = action.payload;
       })
       .addCase(getCharacterById.pending, (state) => {
         state.loading = true;
@@ -117,10 +121,10 @@ const personajesSlice = createSlice({
       .addCase(getCharacterById.rejected, (state) => {
         state.error = true;
         state.loading = false;
-      })
-    ;
+      });
   },
 });
 
-export const { actionSearch, actionClearSearch } = personajesSlice.actions;
+export const { actionSearch, actionClearSearch, actionFavourites, actionDeleteFavourites } =
+  personajesSlice.actions;
 export default personajesSlice.reducer;

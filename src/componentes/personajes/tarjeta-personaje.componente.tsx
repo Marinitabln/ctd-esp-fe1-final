@@ -4,6 +4,7 @@ import { Character } from '../../redux/type';
 import BotonFavorito from '../botones/boton-favorito.componente';
 import './tarjeta-personaje.css';
 
+
 /**
  * Tarjeta para cada personaje dentro de la grilla de personajes. 
  * 
@@ -19,19 +20,19 @@ interface IProps{
 
 const TarjetaPersonaje = ({character}:IProps) => {
     const navigate = useNavigate();
-
-    const favourites = useAppSelector(state => state.characters.favourites)
-    const isFavourite = !!favourites.find(favourite =>favourite.id === character.id)
+  
+    const favourites = useAppSelector(state => state.characters.favourites);
+    const isFavourite = !!favourites.find(favourite =>favourite.id === character.id);
 
     const handlerOnClick = (character:Character)=>{
         navigate(`/detalle/${character.id}`)
-    }
+    };
 
     return <div className="tarjeta-personaje">
         <img src={character.image} alt={character.name} onClick={()=>handlerOnClick(character)}/>
         <div className="tarjeta-personaje-body">
             <span>{character.name}</span>
-            <BotonFavorito esFavorito={isFavourite} character={character}/>
+            <BotonFavorito esFavorito={isFavourite} character={character} />
         </div>
     </div>
 }

@@ -11,6 +11,9 @@
   border: 1px solid #d0d0d0;
 }
 
+.tarjeta-personaje > img:hover {
+ cursor: pointer;
+}
 .tarjeta-personaje > div.tarjeta-personaje-body {
   padding: 10px;
   border: 1px solid #d0d0d0;

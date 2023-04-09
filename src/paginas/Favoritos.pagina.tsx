@@ -1,5 +1,6 @@
 import GrillaPersonajes from "../componentes/personajes/grilla-personajes.componente";
-import { useAppSelector } from "../redux/hook";
+import { actionDeleteFavourites } from "../redux/charactersSlice";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
 
 /**
  * Esta es la pagina de favoritos. Aquí se deberan ver todos los personajes marcados como favoritos
@@ -10,15 +11,23 @@ import { useAppSelector } from "../redux/hook";
  * @returns la pagina de favoritos
  */
 const PaginaFavoritos = () => {
-    const favourites = useAppSelector(state => state.characters.characters)//cambiar por array favoritos
+    const favourites = useAppSelector(state => state.characters.favourites)
+    const dispatch = useAppDispatch();
+
+    let isDisableBtn = !!favourites[0];
+
+    console.log({ isDisableBtn });
 
     return <div className="container">
         <div className="actions">
             <h3>Personajes Favoritos</h3>
-            <button className="danger">Eliminar todos</button>
+            <button className={isDisableBtn ? "danger" : "primary"} disabled={!isDisableBtn} onClick={() => dispatch(actionDeleteFavourites())}>Eliminar todos</button>
         </div>
-        <GrillaPersonajes
-            characters={favourites} />
+        {!!favourites[0] ?
+            <GrillaPersonajes characters={favourites} />
+            :
+            <h2>Aún no agregaste personajes a favoritos.</h2>
+        }
     </div>
 }
 

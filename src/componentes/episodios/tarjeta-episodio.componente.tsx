@@ -39,8 +39,7 @@ const TarjetaEpisodio = ({ urlEpisode }: IProps) => {
         getEpisode(urlEpisode);
     }, [urlEpisode]);
 
-    console.log({episode});
-    
+    //console.log({episode});    
 
     return <div className="tarjeta-episodio">
         <h4>{episode.name}</h4>
