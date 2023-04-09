@@ -5,7 +5,7 @@ import { apiGetCaracters, apiGetCharacterById } from "./apiCalls";
 const initialState: IInitialType = {
   characters: [],
   favourites: [],
-  selectedCharacter: {
+  visitedCharacter: {
     id: 0,
     name: "",
     status: "",
@@ -113,7 +113,7 @@ const personajesSlice = createSlice({
       })
       .addCase(getCharacterById.fulfilled, (state, action) => {
         state.loading = false;
-        state.selectedCharacter = action.payload;
+        state.visitedCharacter = action.payload;
       })
       .addCase(getCharacterById.pending, (state) => {
         state.loading = true;

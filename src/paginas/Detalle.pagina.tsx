@@ -12,8 +12,6 @@ import { getCharacterById } from "../redux/charactersSlice";
  * 
  * EL TRABAJO SOBRE ESTE ARCHIVO ES OPCIONAL Y NO ES REQUISITO DE APROBACION
  * 
- * 
- * 
  * Uso: 
  * ``` <PaginaDetalle /> ```
  * 
@@ -28,7 +26,7 @@ const PaginaDetalle = () => {
 
     const dispatch = useAppDispatch();
 
-    let selectedCharacter = useAppSelector(state => state.characters.selectedCharacter)
+    let selectedCharacter = useAppSelector(state => state.characters.visitedCharacter)
 
     useEffect(() => {
         dispatch(getCharacterById(idNumber));
@@ -61,7 +59,6 @@ const PaginaDetalle = () => {
                         selectedCharacter.episode.map((url, i) => (
                             <TarjetaEpisodio urlEpisode={url} key={i} />
                         ))
-
                     }
                 </div>
             </>

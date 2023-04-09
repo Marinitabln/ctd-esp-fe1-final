@@ -26,7 +26,7 @@ const PaginaFavoritos = () => {
         {!!favourites[0] ?
             <GrillaPersonajes characters={favourites} />
             :
-            <h2>Aún no agregaste personajes a favoritos.</h2>
+            <h2>Vuelve al inicio para agregar personajes a tus favoritos</h2>
         }
     </div>
 }

@@ -40,3 +40,11 @@ header > div nav ul li a {
 header > div nav ul li a:hover {
   color: rgba(57, 146, 255, 1);
 }
+
+.disabled{
+  color: rgb(128, 134, 140);
+}
+
+.disabled:hover{
+  color: rgb(128, 134, 140);
+}

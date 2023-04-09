@@ -22,7 +22,7 @@ export interface Character {
 export interface IInitialType{
     characters: Character[],
     favourites: Character[],
-    selectedCharacter: Character,
+    visitedCharacter: Character,
     pagination:{
         next:string,
         prev:string
