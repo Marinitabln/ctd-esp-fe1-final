@@ -115,13 +115,13 @@ const personajesSlice = createSlice({
         state.loading = false;
         state.visitedCharacter = action.payload;
       })
-      .addCase(getCharacterById.pending, (state) => {
+     /*  .addCase(getCharacterById.pending, (state) => {
         state.loading = true;
       })
       .addCase(getCharacterById.rejected, (state) => {
         state.error = true;
         state.loading = false;
-      });
+      }); */
   },
 });
 
